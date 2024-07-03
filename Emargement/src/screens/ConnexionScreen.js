@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import axios from "axios";
+import { REACT_APP_API_URL } from '@env';
 
 function ConnexionScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -23,7 +24,7 @@ function ConnexionScreen({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`http://localhost:3036/user/login`, {
+      const response = await axios.post(`${REACT_APP_API_URL}/user/login`, {
         UserName: username,
         Password: password,
       });

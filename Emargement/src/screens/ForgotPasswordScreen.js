@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { REACT_APP_API_URL } from '@env';
 
 function ForgotPasswordScreen() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ function ForgotPasswordScreen() {
 
   const handleForgotPassword = async () => {
     try {
-      const response = await axios.post("http://localhost:3036/user/forgotPassword", { email });
+      const response = await axios.post(`${REACT_APP_API_URL}/user/forgotPassword`, { email });
       if (response.status === 200) {
         Alert.alert(
           "Succès",

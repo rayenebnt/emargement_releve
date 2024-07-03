@@ -21,6 +21,7 @@ import "dayjs/locale/fr";
 import "dayjs/locale/en";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import DeviceInfo from "react-native-device-info";
+import { REACT_APP_API_URL } from '@env';
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -77,7 +78,7 @@ function EmargementScreen({ route, navigation }) {
 
           await axios
             .post(
-              `http://localhost:3036/user/emargement`,
+              `${REACT_APP_API_URL}/user/emargement`,
               {
                 lastName,
                 firstName,

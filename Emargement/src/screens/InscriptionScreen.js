@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
+import { REACT_APP_API_URL } from '@env';
 
 function InscriptionScreen({ navigation }) {
   const [lastName, setLastName] = useState("");
@@ -58,9 +59,8 @@ function InscriptionScreen({ navigation }) {
       return;
     }
 
-
     try {
-      const response = await axios.post(`http://localhost:3036/user`, {
+      const response = await axios.post(`${REACT_APP_API_URL}/user`, {
         Nom: lastName,
         Prenom: firstName,
         UserName: username,

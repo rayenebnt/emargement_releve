@@ -12,6 +12,7 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
+import { REACT_APP_API_URL } from '@env';
 
 const ChangePasswordScreen = ({ route, navigation }) => {
   const [password, setPassword] = useState("");
@@ -27,7 +28,7 @@ const ChangePasswordScreen = ({ route, navigation }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:3036/user/changePassword",
+        `${REACT_APP_API_URL}/user/changePassword`,
         {
           email,
           password,

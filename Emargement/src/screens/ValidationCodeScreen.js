@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { REACT_APP_API_URL } from '@env';
 
 const ValidationCodeScreen = ({ route }) => {
   const [code, setCode] = useState("");
@@ -20,7 +21,7 @@ const ValidationCodeScreen = ({ route }) => {
   const handleCodeSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3036/user/verify-reset-code",
+        `${REACT_APP_API_URL}/user/verify-reset-code`,
         {
           email,
           code,
