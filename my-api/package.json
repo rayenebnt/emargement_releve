@@ -2,14 +2,20 @@
   "name": "handied",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon server.js",
     "build": "rm -rf build/ && tsc",
     "eslint": "eslint src/*.ts --fix",
     "start": "node build/server.js",
     "migrate": "node --require ./build/database/migrate.js",
-    "type": "module"
+    "type": "module",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   },
   "author": "",
   "license": "ISC",
@@ -21,8 +27,6 @@
   },
   "dependencies": {
     "@date-io/dayjs": "^2.17.0",
-    "@types/react-router": "^5.1.20",
-    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -33,7 +37,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "express": "^4.19.2",
-    "express.js": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
     "mariadb": "^3.3.0",
@@ -46,9 +49,9 @@
     "oracledb": "^5.5.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
-    "react-native-device-info": "^10.12.0",
-    "react-router": "^6.23.1",
-    "react-router-dom": "^6.23.1",
+    "react-native-device-info": "^10.14.0",
+    "react-router": "^6.11.0",
+    "react-router-dom": "^6.11.0",
     "sequelize": "^6.37.3",
     "sqlite": "^4.1.2",
     "sqlite3": "^5.1.2",

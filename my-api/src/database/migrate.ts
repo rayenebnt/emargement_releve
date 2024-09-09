@@ -1,7 +1,7 @@
-const sequelize = require("./instance");
-const Emargements = require("./models/Emargement");
-const Users = require("./models/Users");
-const ResetCodes = require("./models/ResetCodes");
+import sequelize from './instance'; // Assurez-vous que le chemin est correct
+import Emargements from './models/Emargement'; // Ajustez le chemin si nécessaire
+import Users from './models/Users'; // Ajustez le chemin si nécessaire
+import ResetCodes from './models/ResetCodes'; // Ajustez le chemin si nécessaire
 
 async function migrate() {
   try {
@@ -31,6 +31,8 @@ async function migrate() {
     console.log("Migration réussie !");
   } catch (error) {
     console.error("Erreur lors de la migration :", error);
+  } finally {
+    await sequelize.close();
   }
 }
 

@@ -79,18 +79,18 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.emargement"
-    defaultConfig {
-        applicationId 'com.example.emargement'
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+    namespace "com.lareleve.bariolee" // Assurez-vous que ceci est cohérent avec l'ID de votre application
+   defaultConfig {
+        applicationId "com.lareleve.bariolee" // Assurez-vous que cela correspond au namespace
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.0" // Version de votre application
     }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -104,8 +104,6 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds

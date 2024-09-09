@@ -48,6 +48,10 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Cette application utilise votre position pour afficher votre emplacement actuel.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Cette application utilise votre position pour afficher votre emplacement actuel, même en arrière-plan.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

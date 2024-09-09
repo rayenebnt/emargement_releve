@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/favicon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.emargement"
+      "bundleIdentifier": "com.exemple.emargement"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.example.emargement"
+      "package": "com.exemple.emargement"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,6 +32,7 @@
       "eas": {
         "projectId": "e8e92ccb-e599-4808-ada3-5ad2f1f2ed2b"
       }
-    }
+    },
+    "owner": "rayene9475"
   }
 }

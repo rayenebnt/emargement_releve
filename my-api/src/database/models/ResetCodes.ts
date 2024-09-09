@@ -1,15 +1,29 @@
-import { DataTypes } from "sequelize";
+// src/database/models/ResetCodes.ts
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../instance";
-import Users from "./Users";
+import User from "./Users"; // Assurez-vous que le chemin est correct
 
-const ResetCodes = sequelize.define(
-  "ResetCodes",
+interface ResetCodeAttributes {
+  userId: number;
+  code: number;
+  expiresAt: Date;
+}
+
+interface ResetCodeCreationAttributes extends Optional<ResetCodeAttributes, "userId"> {}
+
+class ResetCode extends Model<ResetCodeAttributes, ResetCodeCreationAttributes> implements ResetCodeAttributes {
+  public userId!: number;
+  public code!: number;
+  public expiresAt!: Date;
+}
+
+ResetCode.init(
   {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Users,
+        model: User,
         key: "id",
       },
     },
@@ -23,8 +37,13 @@ const ResetCodes = sequelize.define(
     },
   },
   {
+    sequelize,
     tableName: "ResetCodes",
   }
 );
 
-export default ResetCodes;
+// Définir les associations si nécessaire
+User.hasMany(ResetCode, { foreignKey: "userId" });
+ResetCode.belongsTo(User, { foreignKey: "userId" });
+
+export default ResetCode;

@@ -67,7 +67,7 @@ function ConnexionScreen({ navigation }) {
           source={require("../../assets/Logo_releve.jpg")}
           style={styles.logo}
         />
-        <Text style={styles.title}>La Releve Bariolée</Text>
+        <Text style={styles.title}>La Relève Bariolée</Text>
         {errorMessage ? (
           <Text style={styles.errorText}>{errorMessage}</Text>
         ) : null}

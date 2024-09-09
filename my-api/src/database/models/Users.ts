@@ -1,8 +1,30 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../instance";
 
-const Users = sequelize.define(
-  "Users",
+// Définir les attributs du modèle
+interface UserAttributes {
+  id: number;
+  Nom: string;
+  Prenom: string;
+  UserName: string;
+  Password: string;
+  Email: string;
+}
+
+// Définir les attributs optionnels pour l'initialisation du modèle
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+
+// Définir la classe du modèle en étendant `Model` avec les attributs définis
+class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+  public id!: number;
+  public Nom!: string;
+  public Prenom!: string;
+  public UserName!: string;
+  public Password!: string;
+  public Email!: string;
+}
+
+User.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -31,8 +53,9 @@ const Users = sequelize.define(
     },
   },
   {
+    sequelize,
     tableName: "Users",
   }
 );
 
-export default Users;
+export default User;

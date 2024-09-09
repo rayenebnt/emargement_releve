@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Users from "../database/models/Users";
-import Emargements from "../database/models/Emargement";
+import User from "../database/models/Users";
+import Emargement from "../database/models/Emargement";
 import jwt from "jsonwebtoken";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
@@ -10,7 +10,7 @@ import tz from "dayjs/plugin/timezone";
 import { Op } from "sequelize";
 import nodemailer from "nodemailer";
 import { randomInt } from "crypto";
-import ResetCodes from "../database/models/ResetCodes";
+import ResetCode from "../database/models/ResetCodes";
 import cron from "node-cron";
 import moment from "moment-timezone";
 import bcrypt from "bcryptjs";
@@ -20,20 +20,18 @@ dayjs.locale("fr");
 dayjs.extend(tz);
 dayjs.tz.setDefault("Europe/Paris");
 
-Users.hasMany(Emargements, {
+User.hasMany(Emargement, {
   foreignKey: "user_id",
   as: "emargements",
 });
-Emargements.belongsTo(Users, {
+Emargement.belongsTo(User, {
   foreignKey: "user_id",
   as: "user",
 });
 
-
-
 async function getAll(req: Request, res: Response) {
   try {
-    const users = await Users.findAll();
+    const users = await User.findAll();
     res.send(JSON.stringify(users));
   } catch (error) {
     console.error(error);
@@ -43,7 +41,7 @@ async function getAll(req: Request, res: Response) {
 
 async function getById(req: Request, res: Response) {
   try {
-    const user = await Users.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id);
 
     if (user) {
       res.send({ user });
@@ -63,7 +61,7 @@ async function create(req: Request, res: Response) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(Password, salt);
 
-    const user = await Users.create({
+    const user = await User.create({
       Nom,
       Prenom,
       UserName,
@@ -80,7 +78,7 @@ async function create(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const user = await Users.update(req.body, {
+    const user = await User.update(req.body, {
       where: {
         id: req.params.id,
       },
@@ -99,7 +97,7 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const result = await Users.destroy({
+    const result = await User.destroy({
       where: { id: req.params.id },
     });
 
@@ -118,7 +116,7 @@ async function login(req: Request, res: Response) {
   const { UserName, Password } = req.body;
 
   try {
-    const user = await Users.findOne({ where: { UserName } });
+    const user = await User.findOne({ where: { UserName } });
 
     if (user) {
       const validPassword = await bcrypt.compare(Password, user.Password);
@@ -140,69 +138,72 @@ async function login(req: Request, res: Response) {
 }
 
 async function emargement(req: Request, res: Response) {
-  const { lastName, firstName, city, deviceId, status, note, emargementType } =
-    req.body;
+  const { lastName, firstName, city, status, note, emargementType } = req.body;
 
-  console.log(req.body);
+  console.log("Request Body:", req.body);
 
   try {
-    const user = await Users.findOne({
+    const user = await User.findOne({
       where: {
         Nom: lastName,
         Prenom: firstName,
       },
     });
 
-    if (user) {
-      const user_id = user.id;
-      const today = moment().tz("Europe/Paris").startOf("day");
-      const emargementsToday = await Emargements.count({
-        where: {
-          deviceId: deviceId,
-          createdAt: {
-            [Op.gte]: today.toDate(),
-            [Op.lt]: today.clone().add(1, "day").toDate(),
-          },
-        },
-      });
-
-      if (emargementsToday >= 9) {
-        return res.status(403).json({
-          error:
-            "Nombre maximal d'émargements atteint pour cet appareil aujourd'hui.",
-        });
-      }
-
-      const emargement = await Emargements.create({
-        user_id,
-        city,
-        deviceId,
-        status,
-        note: note,
-        emargementType: emargementType,
-        emargementTime: dayjs().tz("Europe/Paris").add(2, "hour").toDate(),
-      });
-
-      return res
-        .status(200)
-        .json({ emargement, message: "Émargement réussi." });
-    } else {
+    if (!user) {
+      console.log("User not found");
       return res.status(404).json({
-        error: "Utilisateur non trouvé. Veuillez vérifier les informations.",
+        error: "User not found. Please check the information.",
       });
     }
+
+    console.log("User found:", user);
+
+    const user_id = user.id;
+    const today = moment().tz("Europe/Paris").startOf("day");
+    const emargementsToday = await Emargement.count({
+      where: {
+        user_id: user_id,
+        createdAt: {
+          [Op.gte]: today.toDate(),
+          [Op.lt]: today.clone().add(1, "day").toDate(),
+        },
+      },
+    });
+
+    console.log("Emargements Today:", emargementsToday);
+
+    if (emargementsToday >= 9) {
+      console.log("Max emargements reached for today");
+      return res.status(403).json({
+        error: "Max emargements reached for today.",
+      });
+    }
+
+    const emargement = await Emargement.create({
+      user_id,
+      city,
+      status,
+      note: note,
+      emargementType: emargementType,
+      emargementTime: dayjs().tz("Europe/Paris").toDate(),
+    });
+
+    console.log("Emargement created:", emargement);
+    return res.status(200).json({ emargement, message: "Emargement successful." });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Erreur lors de l'émargement." });
+    console.error("Error during emargement:", error);
+    return res.status(500).json({ error: "Error during emargement." });
   }
 }
 
+
 async function getEmargement(req: Request, res: Response) {
   try {
-    const emargements = await Emargements.findAll({
+    const emargements = await Emargement.findAll({
       include: [
         {
-          model: Users,
+          model: User,
           as: "user",
           attributes: ["Nom", "Prenom"],
         },
@@ -222,12 +223,12 @@ async function forgotPassword(req: Request, res: Response) {
   const { email } = req.body;
 
   try {
-    const user = await Users.findOne({ where: { Email: email } });
+    const user = await User.findOne({ where: { Email: email } });
 
     if (user) {
       const resetCode = randomInt(1000, 9999);
 
-      await ResetCodes.create({
+      await ResetCode.create({
         userId: user.id,
         code: resetCode,
         expiresAt: new Date(Date.now() + 3600000),
@@ -270,12 +271,12 @@ async function verifyResetCode(req: Request, res: Response) {
   const { email, code } = req.body;
 
   try {
-    const user = await Users.findOne({ where: { Email: email } });
+    const user = await User.findOne({ where: { Email: email } });
     if (!user) {
       return res.status(404).json({ error: "Utilisateur non trouvé." });
     }
 
-    const validCode = await ResetCodes.findOne({
+    const validCode = await ResetCode.findOne({
       where: {
         userId: user.id,
         code: code,
@@ -300,13 +301,13 @@ async function changePassword(req: Request, res: Response) {
   const { email, password } = req.body;
 
   try {
-    const user = await Users.findOne({ where: { Email: email } });
+    const user = await User.findOne({ where: { Email: email } });
 
     if (user) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      await Users.update(
+      await User.update(
         { Password: hashedPassword },
         { where: { Email: email } }
       );
@@ -327,10 +328,10 @@ async function sendEmargementInfo() {
     const today = dayjs().startOf("day").toDate();
     const tomorrow = dayjs().add(1, "day").startOf("day").toDate();
 
-    const emargements = await Emargements.findAll({
+    const emargements = await Emargement.findAll({
       include: [
         {
-          model: Users,
+          model: User,
           as: "user",
           attributes: ["Nom", "Prenom"],
         },
@@ -351,7 +352,7 @@ async function sendEmargementInfo() {
       note: emargement.note,
       EmargementsType: emargement.emargementType,
       emargementTime: dayjs(emargement.emargementTime)
-        .add(-2, "hour")
+        .add(-1, "hour")
         .format("DD/MM/YYYY HH:mm:ss"),
     }));
 
