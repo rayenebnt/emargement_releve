@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import axios from "axios";
-import { REACT_APP_API_URL } from "@env";
+import { REACT_APP_API_URL } from "../../API";
 
 function ConnexionScreen({ navigation }) {
   const [username, setUsername] = useState("");

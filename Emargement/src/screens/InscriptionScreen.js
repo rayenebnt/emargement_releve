@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from "../../API";
 
 function InscriptionScreen({ navigation }) {
   const [lastName, setLastName] = useState("");

@@ -22,7 +22,7 @@ import tz from 'dayjs/plugin/timezone';
 import 'dayjs/locale/fr';
 import 'dayjs/locale/en';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { REACT_APP_API_URL } from "@env";
+import { REACT_APP_API_URL } from '../../API';
 
 dayjs.extend(utc);
 dayjs.extend(tz);

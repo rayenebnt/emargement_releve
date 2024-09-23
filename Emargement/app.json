@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Emargement",
-    "slug": "Emargement",
+    "name": "Bariolée",
+    "slug": "Bariolée",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.exemple.emargement"
+      "bundleIdentifier": "com.example.emargement"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.exemple.emargement"
+      "package": "com.example.emargement"
     },
     "web": {
       "favicon": "./assets/favicon.png"

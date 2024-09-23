@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from "../../API";
 
 const ValidationCodeScreen = ({ route }) => {
   const [code, setCode] = useState("");

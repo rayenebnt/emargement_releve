@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from "../../API";
 
 function ForgotPasswordScreen() {
   const navigation = useNavigation();
